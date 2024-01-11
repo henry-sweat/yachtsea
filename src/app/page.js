@@ -1,95 +1,88 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+'use client';
+import { useState } from 'react';
+import Image from 'next/image';
+import styles from './page.module.css';
+import next from 'next';
 
 export default function Home() {
+  const [currentTurn, setCurrentTurn] = useState(0);
+  const [diceValues, setDiceValues] = useState([
+    { id: 'die-1', value: '-', isSelected: false },
+    { id: 'die-2', value: '-', isSelected: false },
+    { id: 'die-3', value: '-', isSelected: false },
+    { id: 'die-4', value: '-', isSelected: false },
+    { id: 'die-5', value: '-', isSelected: false },
+  ]);
+
+  function handleRollClicked() {
+    let newDiceValues;
+    let nextTurn = currentTurn + 1;
+    if (nextTurn > 3) {
+      newDiceValues = diceValues.map((die) => ({
+        id: die.id,
+        value: rollSixSidedDie(),
+        isSelected: false,
+      }));
+      setDiceValues(newDiceValues);
+      setCurrentTurn(1);
+    } else {
+      newDiceValues = diceValues.map((die) => ({
+        id: die.id,
+        value: die.isSelected ? die.value : rollSixSidedDie(),
+        isSelected: currentTurn + 1 === 3 ? true : die.isSelected,
+      }));
+      setDiceValues(newDiceValues);
+      setCurrentTurn(currentTurn + 1);
+    }
+  }
+
+  function handleDieClicked(e) {
+    if (currentTurn === 3 || currentTurn === 0) {
+      return;
+    }
+    console.log('die has been clicked:', e.target.id[4]);
+    let indexOfClickedDie = e.target.id[4] - 1;
+    let newDiceValues = [...diceValues];
+    newDiceValues[indexOfClickedDie].isSelected =
+      !newDiceValues[indexOfClickedDie].isSelected;
+    setDiceValues(newDiceValues);
+  }
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+        <p>Yachtsea!!</p>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      <button onClick={handleRollClicked}>ROLL</button>
+      {diceValues.map((die) => (
+        <Die
+          key={die.id}
+          id={die.id}
+          value={die.value}
+          isSelected={die.isSelected}
+          handleDieClicked={handleDieClicked}
         />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      ))}
+      <p>{`turn ${currentTurn} out 3`}</p>
+      <div className={styles.center}>
+        <div>testing</div>
       </div>
     </main>
-  )
+  );
+}
+
+function Die({ id, value, isSelected, handleDieClicked }) {
+  return (
+    <button
+      id={id}
+      className={`${styles.dice} ${isSelected ? styles.selected : ''}`}
+      onClick={handleDieClicked}
+    >
+      {value}
+    </button>
+  );
+}
+
+function rollSixSidedDie() {
+  return Math.ceil(Math.random() * 6);
 }

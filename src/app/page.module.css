@@ -1,7 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
@@ -32,6 +32,18 @@
   background-color: rgba(var(--callout-rgb), 0.5);
   border: 1px solid rgba(var(--callout-border-rgb), 0.3);
   border-radius: var(--border-radius);
+}
+
+button.dice {
+  height: 125px;
+  width: 125px;
+  border-radius: 10px;
+  border-color: red;
+  font-size: 76pt;
+}
+
+button.selected {
+  border-color: green;
 }
 
 .code {
@@ -74,6 +86,7 @@
 
 .center {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
