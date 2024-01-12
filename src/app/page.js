@@ -2,12 +2,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import Scorecard from "@/components/Scorecard";
 
 export default function Home() {
   const [currentTurn, setCurrentTurn] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [diceValues, setDiceValues] = useState(generateInitialDiceValuesState());
   const [scorecard, setScorecard] = useState(generateInitialScorecardState());
+  const [points, setPoints] = useState(generateInitialPointsState());
 
   function handleRollClicked() {
     let newDiceValues;
@@ -61,7 +63,54 @@ export default function Home() {
   }
 
   function handlePointsClicked(e) {
-    // if points earned
+    if (currentTurn === 0) {
+      return;
+    }
+
+    let indexOfClickedRow = e.target.id[4] - 1;
+    if (scorecard[indexOfClickedRow].earnedPoints >= 0) {
+      return;
+    } else {
+      let newScorecard = [...scorecard];
+      newScorecard[indexOfClickedRow].earnedPoints =
+        newScorecard[indexOfClickedRow].potentialPoints;
+      setScorecard(newScorecard);
+    }
+    let newDiceValues = diceValues.map((die) => ({
+      id: die.id,
+      value: die.value,
+      isSelected: true,
+    }));
+    setDiceValues(newDiceValues);
+    setCurrentTurn(3);
+    recalculatePointsTotals();
+  }
+
+  function recalculatePointsTotals() {
+    let newPoints = { ...points };
+    const [upperSectionSubTotal, upperSectionBonus, upperSectionTotal] =
+      calculateUpperSectionTotals();
+    newPoints.upperSectionSubTotal = upperSectionSubTotal;
+    newPoints.upperSectionBonus = upperSectionBonus;
+    newPoints.upperSectionTotal = upperSectionTotal;
+    setPoints(newPoints);
+  }
+
+  function calculateUpperSectionTotals() {
+    const relevantIndexes = [0, 1, 2, 3, 4, 5];
+    let subtotal = 0;
+    let bonus = 0;
+    let total = 0;
+    relevantIndexes.forEach((idx) => {
+      if (scorecard[idx].earnedPoints >= 0) {
+        subtotal += scorecard[idx].earnedPoints;
+      }
+    });
+    if (subtotal >= 63) {
+      bonus = 35;
+    }
+    total = subtotal + bonus;
+    return [subtotal, bonus, total];
   }
 
   return (
@@ -84,86 +133,11 @@ export default function Home() {
           <p>{`turn ${currentTurn} out 3`}</p>
           <p>{`round ${currentRound} out 13`}</p>
         </div>
-        <div className={styles.scorecard}>
-          <h3>Scorecard</h3>
-          <table className={styles.upperSection}>
-            <thead>
-              <tr className={styles.upperSectionHeaderRow}>
-                <th>Upper Section</th>
-                <th>How To Score</th>
-                <th>Points Earned</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>ONES</td>
-                <td>Count and Add Only Ones</td>
-                {scorecard[0].earnedPoints >= 0 ? (
-                  <td className={styles.earnedPoints}>
-                    <strong>{scorecard[0].earnedPoints}</strong>
-                  </td>
-                ) : (
-                  <td className={styles.potentialPoints}>{scorecard[0].potentialPoints}</td>
-                )}
-              </tr>
-              <tr>
-                <td>TWOS</td>
-                <td>Count and Add Only Twos</td>
-                {scorecard[1].earnedPoints >= 0 ? (
-                  <td className={styles.earnedPoints}>
-                    <strong>{scorecard[1].earnedPoints}</strong>
-                  </td>
-                ) : (
-                  <td className={styles.potentialPoints}>{scorecard[1].potentialPoints}</td>
-                )}
-              </tr>
-              <tr>
-                <td>THREES</td>
-                <td>Count and Add Only Threes</td>
-                {scorecard[2].earnedPoints >= 0 ? (
-                  <td className={styles.earnedPoints}>
-                    <strong>{scorecard[2].earnedPoints}</strong>
-                  </td>
-                ) : (
-                  <td className={styles.potentialPoints}>{scorecard[2].potentialPoints}</td>
-                )}
-              </tr>
-              <tr>
-                <td>FOURS</td>
-                <td>Count and Add Only Fours</td>
-                {scorecard[3].earnedPoints >= 0 ? (
-                  <td className={styles.earnedPoints}>
-                    <strong>{scorecard[3].earnedPoints}</strong>
-                  </td>
-                ) : (
-                  <td className={styles.potentialPoints}>{scorecard[3].potentialPoints}</td>
-                )}
-              </tr>
-              <tr>
-                <td>FIVES</td>
-                <td>Count and Add Only Fives</td>
-                {scorecard[4].earnedPoints >= 0 ? (
-                  <td className={styles.earnedPoints}>
-                    <strong>{scorecard[4].earnedPoints}</strong>
-                  </td>
-                ) : (
-                  <td className={styles.potentialPoints}>{scorecard[4].potentialPoints}</td>
-                )}
-              </tr>
-              <tr>
-                <td>SIXES</td>
-                <td>Count and Add Only Sixes</td>
-                {scorecard[5].earnedPoints >= 0 ? (
-                  <td className={styles.earnedPoints}>
-                    <strong>{scorecard[5].earnedPoints}</strong>
-                  </td>
-                ) : (
-                  <td className={styles.potentialPoints}>{scorecard[5].potentialPoints}</td>
-                )}
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <Scorecard
+          scorecard={scorecard}
+          points={points}
+          handlePointsClicked={handlePointsClicked}
+        />
       </div>
 
       <div className={styles.center}>
@@ -204,6 +178,17 @@ function generateInitialScorecardState() {
   }));
 }
 
+function generateInitialPointsState() {
+  return {
+    upperSectionSubTotal: undefined,
+    upperSectionBonus: undefined,
+    upperSectionTotal: undefined,
+    yachtseaBonusTotal: undefined,
+    lowerSectionTotal: undefined,
+    grandTotal: undefined,
+  };
+}
+
 function potentialPointsFunctionFactory(dieValue) {
   return (newDiceValues) => {
     let points = 0;
@@ -219,5 +204,3 @@ function potentialPointsFunctionFactory(dieValue) {
 function rollSixSidedDie() {
   return Math.ceil(Math.random() * 6);
 }
-// click points earned cell to book the points, changing text to white
-// also on click, delete corresponding function for that row
