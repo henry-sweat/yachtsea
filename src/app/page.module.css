@@ -34,7 +34,19 @@
   border-radius: var(--border-radius);
 }
 
-button.dice {
+.game {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 500px;
+}
+
+.dice {
+  display: flex;
+  flex-direction: column;
+}
+
+button.die {
   height: 125px;
   width: 125px;
   border-radius: 10px;
@@ -44,6 +56,19 @@ button.dice {
 
 button.selected {
   border-color: green;
+}
+
+.scorecard {
+  width: 325px;
+}
+
+table.upperSection {
+  border: 1px solid white;
+  text-align: center;
+}
+
+.potentialPoints {
+  color: gray;
 }
 
 .code {
