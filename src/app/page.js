@@ -1,8 +1,9 @@
-"use client";
-import { useState } from "react";
-import Image from "next/image";
-import styles from "./page.module.css";
-import Scorecard from "@/components/Scorecard";
+'use client';
+import { useState } from 'react';
+import Image from 'next/image';
+import styles from './page.module.css';
+import Scorecard from '@/components/Scorecard';
+import generateInitialScorecardState from '../scorecardState';
 
 export default function Home() {
   const [currentTurn, setCurrentTurn] = useState(0);
@@ -24,6 +25,17 @@ export default function Home() {
       setCurrentTurn(1);
       if (currentRound + 1 === 14) {
         setCurrentRound(1);
+        let newScorecard = scorecard.map((row) => {
+          return {
+            id: row.id,
+            earnedPoints: undefined,
+            potentialPoints: row.potentialPointsFunction(newDiceValues),
+            potentialPointsFunction: row.potentialPointsFunction,
+          };
+        });
+        setScorecard(newScorecard);
+        setPoints(generateInitialPointsState());
+        return;
       } else {
         setCurrentRound(currentRound + 1);
       }
@@ -68,6 +80,7 @@ export default function Home() {
     }
 
     let indexOfClickedRow = e.target.id[4] - 1;
+    console.log('indexOfClickedRow:', indexOfClickedRow);
     if (scorecard[indexOfClickedRow].earnedPoints >= 0) {
       return;
     } else {
@@ -151,7 +164,7 @@ function Die({ id, value, isSelected, handleDieClicked }) {
   return (
     <button
       id={id}
-      className={`${styles.die} ${isSelected ? styles.selected : ""}`}
+      className={`${styles.die} ${isSelected ? styles.selected : ''}`}
       onClick={handleDieClicked}
     >
       {value}
@@ -163,20 +176,20 @@ function generateInitialDiceValuesState() {
   const dice = [1, 2, 3, 4, 5];
   return dice.map((dieNumber) => ({
     id: `die-${dieNumber}`,
-    value: "-",
+    value: '-',
     isSelected: false,
   }));
 }
 
-function generateInitialScorecardState() {
-  const rows = [1, 2, 3, 4, 5, 6];
-  return rows.map((rowNumber) => ({
-    id: `row-${rowNumber}`,
-    earnedPoints: undefined,
-    potentialPoints: undefined,
-    potentialPointsFunction: potentialPointsFunctionFactory(rowNumber),
-  }));
-}
+// function generateInitialScorecardState() {
+//   const upperSectionRows = [1, 2, 3, 4, 5, 6];
+//   return upperSectionRows.map((rowNumber) => ({
+//     id: `row-${rowNumber}`,
+//     earnedPoints: undefined,
+//     potentialPoints: undefined,
+//     potentialPointsFunction: potentialPointsFunctionFactory(rowNumber),
+//   }));
+// }
 
 function generateInitialPointsState() {
   return {
