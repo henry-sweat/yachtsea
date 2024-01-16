@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
 import Scorecard from '@/components/Scorecard';
-import generateInitialScorecardState from '../scorecardState';
+import generateInitialScorecardState, { checkForMatchingNumbers } from '../scorecardState';
 
 export default function Home() {
   const [currentTurn, setCurrentTurn] = useState(0);
@@ -11,8 +11,12 @@ export default function Home() {
   const [diceValues, setDiceValues] = useState(generateInitialDiceValuesState());
   const [scorecard, setScorecard] = useState(generateInitialScorecardState());
   const [points, setPoints] = useState(generateInitialPointsState());
+  const [hasSelectedPointsThisTurn, setHasSelectedPointsThisTurn] = useState(false);
 
   function handleRollClicked() {
+    if (hasSelectedPointsThisTurn) {
+      setHasSelectedPointsThisTurn(false);
+    }
     let newDiceValues;
     let nextTurn = currentTurn + 1;
     if (nextTurn > 3) {
@@ -25,7 +29,8 @@ export default function Home() {
       setCurrentTurn(1);
       if (currentRound + 1 === 14) {
         setCurrentRound(1);
-        let newScorecard = scorecard.map((row) => {
+        let newScorecard = {};
+        newScorecard.rows = scorecard.rows.map((row) => {
           return {
             id: row.id,
             earnedPoints: undefined,
@@ -33,6 +38,9 @@ export default function Home() {
             potentialPointsFunction: row.potentialPointsFunction,
           };
         });
+        newScorecard.yachtseaBonus = {
+          numberOfBonuses: 0,
+        };
         setScorecard(newScorecard);
         setPoints(generateInitialPointsState());
         return;
@@ -49,7 +57,8 @@ export default function Home() {
       setCurrentTurn(currentTurn + 1);
     }
 
-    let newScorecard = scorecard.map((row) => {
+    let newScorecard = {};
+    newScorecard.rows = scorecard.rows.map((row) => {
       if (row.earnedPoints >= 0) {
         return row;
       } else {
@@ -61,6 +70,9 @@ export default function Home() {
         };
       }
     });
+    newScorecard.yachtseaBonus = {
+      numberOfBonuses: calculateNumberOfYachtseaBonuses(newDiceValues),
+    };
     setScorecard(newScorecard);
   }
 
@@ -75,18 +87,18 @@ export default function Home() {
   }
 
   function handlePointsClicked(e) {
-    if (currentTurn === 0) {
+    if (currentTurn === 0 || hasSelectedPointsThisTurn) {
       return;
     }
 
-    let indexOfClickedRow = e.target.id[4] - 1;
-    console.log('indexOfClickedRow:', indexOfClickedRow);
-    if (scorecard[indexOfClickedRow].earnedPoints >= 0) {
+    let indexOfClickedRow = e.target.id.slice(4) - 1;
+
+    if (scorecard.rows[indexOfClickedRow].earnedPoints >= 0) {
       return;
     } else {
-      let newScorecard = [...scorecard];
-      newScorecard[indexOfClickedRow].earnedPoints =
-        newScorecard[indexOfClickedRow].potentialPoints;
+      let newScorecard = { ...scorecard };
+      newScorecard.rows[indexOfClickedRow].earnedPoints =
+        newScorecard.rows[indexOfClickedRow].potentialPoints;
       setScorecard(newScorecard);
     }
     let newDiceValues = diceValues.map((die) => ({
@@ -97,15 +109,20 @@ export default function Home() {
     setDiceValues(newDiceValues);
     setCurrentTurn(3);
     recalculatePointsTotals();
+    setHasSelectedPointsThisTurn(true);
   }
 
   function recalculatePointsTotals() {
     let newPoints = { ...points };
     const [upperSectionSubTotal, upperSectionBonus, upperSectionTotal] =
       calculateUpperSectionTotals();
+    const [yachtseaBonusTotal, lowerSectionTotal] = calculateLowerSectionTotals();
     newPoints.upperSectionSubTotal = upperSectionSubTotal;
     newPoints.upperSectionBonus = upperSectionBonus;
     newPoints.upperSectionTotal = upperSectionTotal;
+    newPoints.yachtseaBonusTotal = yachtseaBonusTotal;
+    newPoints.lowerSectionTotal = lowerSectionTotal;
+    newPoints.grandTotal = upperSectionTotal + lowerSectionTotal;
     setPoints(newPoints);
   }
 
@@ -115,8 +132,8 @@ export default function Home() {
     let bonus = 0;
     let total = 0;
     relevantIndexes.forEach((idx) => {
-      if (scorecard[idx].earnedPoints >= 0) {
-        subtotal += scorecard[idx].earnedPoints;
+      if (scorecard.rows[idx].earnedPoints >= 0) {
+        subtotal += scorecard.rows[idx].earnedPoints;
       }
     });
     if (subtotal >= 63) {
@@ -124,6 +141,30 @@ export default function Home() {
     }
     total = subtotal + bonus;
     return [subtotal, bonus, total];
+  }
+
+  function calculateLowerSectionTotals() {
+    const relevantIndexes = [6, 7, 8, 9, 10, 11, 12];
+    let total = 0;
+    relevantIndexes.forEach((idx) => {
+      if (scorecard.rows[idx].earnedPoints >= 0) {
+        total += scorecard.rows[idx].earnedPoints;
+      }
+    });
+    const bonus = scorecard.yachtseaBonus.numberOfBonuses * 100;
+    total += bonus;
+    return [bonus, total];
+  }
+
+  function calculateNumberOfYachtseaBonuses(mostRecentRoll) {
+    const currentNumberOfYachtseaBonuses = scorecard.yachtseaBonus.numberOfBonuses;
+    const checkForYachtseaFunction = checkForMatchingNumbers(5);
+    const isCurrentRollAYachtsea = checkForYachtseaFunction(mostRecentRoll) === 50 ? true : false;
+    if (isCurrentRollAYachtsea && scorecard.rows[11].earnedPoints === 50) {
+      return currentNumberOfYachtseaBonuses + 1;
+    } else {
+      return currentNumberOfYachtseaBonuses;
+    }
   }
 
   return (
@@ -181,16 +222,6 @@ function generateInitialDiceValuesState() {
   }));
 }
 
-// function generateInitialScorecardState() {
-//   const upperSectionRows = [1, 2, 3, 4, 5, 6];
-//   return upperSectionRows.map((rowNumber) => ({
-//     id: `row-${rowNumber}`,
-//     earnedPoints: undefined,
-//     potentialPoints: undefined,
-//     potentialPointsFunction: potentialPointsFunctionFactory(rowNumber),
-//   }));
-// }
-
 function generateInitialPointsState() {
   return {
     upperSectionSubTotal: undefined,
@@ -199,18 +230,6 @@ function generateInitialPointsState() {
     yachtseaBonusTotal: undefined,
     lowerSectionTotal: undefined,
     grandTotal: undefined,
-  };
-}
-
-function potentialPointsFunctionFactory(dieValue) {
-  return (newDiceValues) => {
-    let points = 0;
-    newDiceValues.forEach((die) => {
-      if (die.value === dieValue) {
-        points += dieValue;
-      }
-    });
-    return points;
   };
 }
 

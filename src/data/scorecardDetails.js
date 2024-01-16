@@ -10,9 +10,11 @@ export const upperSectionDetails = [
 export const lowerSectionDetails = [
   { category: '3 of a kind', description: 'Add Total of All Dice', index: 6, id: 'row-7' },
   { category: '4 of a kind', description: 'Add Total of All Dice', index: 7, id: 'row-8' },
-  // { category: 'Full House', description: 'Score 25', index: 8, id: 'row-9' },
-  // { category: 'Small Straight', description: 'Score 30', index: 9, id: 'row-10' },
-  // { category: 'Large Straight', description: 'Score 40', index: 10, id: 'row-11' },
-  // { category: 'Yahtzee', description: 'Score 50', index: 11, id: 'row-12' },
-  // { category: 'Chance', description: 'Add Total of All Dice', index: 12, id: 'row-13' },
+  { category: 'Full House', description: 'Score 25', index: 8, id: 'row-9' },
+  { category: 'Small Straight', description: 'Score 30', index: 9, id: 'row-10' },
+  { category: 'Large Straight', description: 'Score 40', index: 10, id: 'row-11' },
+  { category: 'Yahtzee', description: 'Score 50', index: 11, id: 'row-12' },
+  { category: 'Chance', description: 'Add Total of All Dice', index: 12, id: 'row-13' },
 ];
+
+export const yachtseaBonusSymbol = 'X';
