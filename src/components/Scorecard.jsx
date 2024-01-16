@@ -6,7 +6,7 @@ import {
   yachtseaBonusSymbol,
 } from '@/data/scorecardDetails';
 
-export default function Scorecard({ scorecard, points, handlePointsClicked }) {
+export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
   function generateUpperSectionOfScorecard(scorecardDetails) {
     return scorecardDetails.map((row) => (
       <tr key={row.id}>
@@ -59,17 +59,17 @@ export default function Scorecard({ scorecard, points, handlePointsClicked }) {
           <tr>
             <td>{'TOTAL SCORE'}</td>
             <td>{'--->'}</td>
-            <td>{points.upperSectionSubTotal} / 63</td>
+            <td>{totals.upperSectionSubTotal} / 63</td>
           </tr>
           <tr>
             <td>{'BONUS'}</td>
             <td>{'--->'}</td>
-            <td>{points.upperSectionBonus}</td>
+            <td>{totals.upperSectionBonus}</td>
           </tr>
           <tr>
             <td>{'UPPER SECTION TOTAL'}</td>
             <td>{'--->'}</td>
-            <td>{points.upperSectionTotal}</td>
+            <td>{totals.upperSectionTotal}</td>
           </tr>
           {generateLowerSectionOfScorecard(lowerSectionDetails)}
           <tr>
@@ -81,17 +81,17 @@ export default function Scorecard({ scorecard, points, handlePointsClicked }) {
           </tr>
           <tr>
             <td>{'Score 100 per X'}</td>
-            <td>{points.yachtseaBonusTotal}</td>
+            <td>{totals.yachtseaBonusTotal}</td>
           </tr>
           <tr>
             <td>{'LOWER SECTION TOTAL'}</td>
             <td>{'--->'}</td>
-            <td>{points.lowerSectionTotal}</td>
+            <td>{totals.lowerSectionTotal}</td>
           </tr>
           <tr>
             <td>{'GRAND TOTAL'}</td>
             <td>{'--->'}</td>
-            <td>{points.grandTotal}</td>
+            <td>{totals.grandTotal}</td>
           </tr>
         </tbody>
       </table>

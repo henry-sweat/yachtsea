@@ -190,26 +190,6 @@ function checkForStraight(lengthOfSequence) {
   };
 }
 
-function alreadyHasYachtseaAndCurrentRollIsYachtsea() {
-  return (latestRoll, previousScorecardState) => {
-    const checkForYachtsea = checkForMatchingNumbers(5);
-    const currentRollIsYachtsea = checkForYachtsea(latestRoll);
-    const alreadyHasYachtsea = previousScorecardState.rows[11].earnedPoints === 50;
-    return currentRollIsYachtsea && alreadyHasYachtsea;
-  };
-}
-
-function checkforYachtseaEarnedPoints() {
-  return (previousScorecardState) => {
-    const pointsEarnedForYachstea = previousScorecardState.rows[11].earnedPoints;
-    if (pointsEarnedForYachstea === 50) {
-      return 50;
-    } else {
-      return 0;
-    }
-  };
-}
-
 function sumOfDiceValues(diceValues) {
   let sum = 0;
   diceValues.forEach((dieValue) => {
