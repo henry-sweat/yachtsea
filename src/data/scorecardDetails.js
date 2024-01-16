@@ -13,7 +13,7 @@ export const lowerSectionDetails = [
   { category: 'Full House', description: 'Score 25', index: 8, id: 'row-9' },
   { category: 'Small Straight', description: 'Score 30', index: 9, id: 'row-10' },
   { category: 'Large Straight', description: 'Score 40', index: 10, id: 'row-11' },
-  { category: 'Yahtzee', description: 'Score 50', index: 11, id: 'row-12' },
+  { category: 'Yachtsea', description: 'Score 50', index: 11, id: 'row-12' },
   { category: 'Chance', description: 'Add All Dice', index: 12, id: 'row-13' },
 ];
 
