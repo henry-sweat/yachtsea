@@ -9,10 +9,6 @@ export default function Home() {
         <p>Yachtsea!!</p>
       </div>
       <Game />
-
-      <div className={styles.center}>
-        <div>testing</div>
-      </div>
     </main>
   );
 }

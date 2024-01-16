@@ -44,7 +44,7 @@ export default function Game() {
           numberOfBonuses: 0,
         };
         setScorecard(newScorecard);
-        setTotals(generateInitialPointsState());
+        setTotals(generateInitialTotalsState());
         return;
       } else {
         setCurrentRound(currentRound + 1);
@@ -173,25 +173,34 @@ export default function Game() {
 
   return (
     <div className={styles.game}>
-      <div className={styles.dice}>
+      <div className={styles.leftSideOfGame}>
         <button onClick={handleRollClicked}>ROLL</button>
-        {diceValues.map((die) => (
-          <Die
-            key={die.id}
-            id={die.id}
-            value={die.value}
-            isSelected={die.isSelected}
-            handleDieClicked={handleDieClicked}
-          />
-        ))}
-        <p>{`turn ${currentTurn} out 3`}</p>
-        <p>{`round ${currentRound} out 13`}</p>
+        <div className={styles.dice}>
+          {diceValues.map((die) => (
+            <Die
+              key={die.id}
+              id={die.id}
+              value={die.value}
+              isSelected={die.isSelected}
+              handleDieClicked={handleDieClicked}
+            />
+          ))}
+        </div>
       </div>
-      <Scorecard
-        scorecard={scorecard}
-        totals={totals}
-        handlePointsClicked={handlePointsClicked}
-      />
+
+      <div className={styles.rightSideOfGame}>
+        <div className={styles.scorecardHeading}>
+          <h3>Scorecard</h3>
+          <p>{`Roll ${currentTurn} / 3`}</p>
+          <p>{`Turn ${currentRound} / 13`}</p>
+        </div>
+
+        <Scorecard
+          scorecard={scorecard}
+          totals={totals}
+          handlePointsClicked={handlePointsClicked}
+        />
+      </div>
     </div>
   );
 }

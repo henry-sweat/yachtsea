@@ -38,12 +38,13 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 500px;
+  width: 575px;
 }
 
 .dice {
   display: flex;
   flex-direction: column;
+  margin-bottom: 15px;
 }
 
 button.die {
@@ -52,6 +53,7 @@ button.die {
   border-radius: 10px;
   border-color: red;
   font-size: 76pt;
+  margin: 5px;
 }
 
 button.selected {
@@ -59,16 +61,39 @@ button.selected {
 }
 
 .scorecard {
-  width: 350px;
+  width: 400px;
 }
 
-table.upperSection {
+.scorecardHeading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+table.scorecardTable {
   border: 1px solid white;
   text-align: center;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+th.upperSectionHeaderRow {
+  width: 33.333%;
+}
+
+.grandTotalRow {
+  border: 1px solid white;
 }
 
 .potentialPoints {
   color: gray;
+}
+
+.boldText {
+  font-weight: 700;
 }
 
 .code {
@@ -231,7 +256,11 @@ table.upperSection {
     inset: auto 0 0;
     padding: 2rem;
     height: 200px;
-    background: linear-gradient(to bottom, transparent 0%, rgb(var(--background-end-rgb)) 40%);
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(var(--background-end-rgb)) 40%
+    );
     z-index: 1;
   }
 }

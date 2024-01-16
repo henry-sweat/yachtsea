@@ -11,13 +11,17 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
     return scorecardDetails.map((row) => (
       <tr key={row.id}>
         <td>{row.numberTextAllCaps}</td>
-        <td>{`Count and Add Only ${row.numberText}`}</td>
+        <td>{`Add Only ${row.numberText}`}</td>
         {scorecard.rows[row.index].earnedPoints >= 0 ? (
           <td id={row.id} className={styles.earnedPoints}>
             <strong>{scorecard.rows[row.index].earnedPoints}</strong>
           </td>
         ) : (
-          <td id={row.id} className={styles.potentialPoints} onClick={handlePointsClicked}>
+          <td
+            id={row.id}
+            className={styles.potentialPoints}
+            onClick={handlePointsClicked}
+          >
             {scorecard.rows[row.index].potentialPoints}
           </td>
         )}
@@ -35,7 +39,11 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
             <strong>{scorecard.rows[row.index].earnedPoints}</strong>
           </td>
         ) : (
-          <td id={row.id} className={styles.potentialPoints} onClick={handlePointsClicked}>
+          <td
+            id={row.id}
+            className={styles.potentialPoints}
+            onClick={handlePointsClicked}
+          >
             {scorecard.rows[row.index].potentialPoints}
           </td>
         )}
@@ -45,35 +53,40 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
 
   return (
     <div className={styles.scorecard}>
-      <h3>Scorecard</h3>
-      <table className={styles.upperSection}>
+      <table className={styles.scorecardTable}>
         <thead>
-          <tr className={styles.upperSectionHeaderRow}>
-            <th>Upper Section</th>
-            <th>How To Score</th>
-            <th>Points Earned</th>
+          <tr>
+            <th className={styles.upperSectionHeaderRow}>Upper Section</th>
+            <th className={styles.upperSectionHeaderRow}>How To Score</th>
+            <th className={styles.upperSectionHeaderRow}>Points Earned</th>
           </tr>
         </thead>
         <tbody>
           {generateUpperSectionOfScorecard(upperSectionDetails)}
           <tr>
-            <td>{'TOTAL SCORE'}</td>
+            <td className={styles.boldText}>{'TOTAL SCORE'}</td>
             <td>{'--->'}</td>
-            <td>{totals.upperSectionSubTotal} / 63</td>
+            <td>
+              {totals.upperSectionSubTotal === undefined
+                ? undefined
+                : `${totals.upperSectionSubTotal} / 63`}
+            </td>
           </tr>
           <tr>
-            <td>{'BONUS'}</td>
+            <td className={styles.boldText}>{'BONUS'}</td>
             <td>{'--->'}</td>
             <td>{totals.upperSectionBonus}</td>
           </tr>
           <tr>
-            <td>{'UPPER SECTION TOTAL'}</td>
+            <td className={styles.boldText}>{'UPPER TOTAL'}</td>
             <td>{'--->'}</td>
             <td>{totals.upperSectionTotal}</td>
           </tr>
           {generateLowerSectionOfScorecard(lowerSectionDetails)}
           <tr>
-            <td rowSpan={'2'}>{'YACHTSEA BONUS'}</td>
+            <td className={styles.boldText} rowSpan={'2'}>
+              {'YACHTSEA BONUS'}
+            </td>
             <td>{'X per Bonus'}</td>
             <td id={'row-YachtseaBonusX'} className={styles.earnedPoints}>
               {yachtseaBonusSymbol.repeat(scorecard.yachtseaBonus.numberOfBonuses)}
@@ -84,12 +97,12 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
             <td>{totals.yachtseaBonusTotal}</td>
           </tr>
           <tr>
-            <td>{'LOWER SECTION TOTAL'}</td>
+            <td className={styles.boldText}>{'LOWER TOTAL'}</td>
             <td>{'--->'}</td>
             <td>{totals.lowerSectionTotal}</td>
           </tr>
-          <tr>
-            <td>{'GRAND TOTAL'}</td>
+          <tr className={styles.grandTotalRow}>
+            <td className={styles.boldText}>{'GRAND TOTAL'}</td>
             <td>{'--->'}</td>
             <td>{totals.grandTotal}</td>
           </tr>
