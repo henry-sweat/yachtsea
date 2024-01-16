@@ -5,9 +5,6 @@ import Game from '@/components/Game';
 export default function Home() {
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>Yachtsea!!</p>
-      </div>
       <Game />
     </main>
   );

@@ -5,6 +5,7 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  background: var(--secondary-glow);
 }
 
 .description {
@@ -41,6 +42,22 @@
   width: 575px;
 }
 
+.leftSideOfGame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button.roll {
+  background: var(--secondary-glow);
+  width: 115px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  border-color: white;
+  padding: 5px;
+  margin: 5px;
+}
+
 .dice {
   display: flex;
   flex-direction: column;
@@ -48,12 +65,13 @@
 }
 
 button.die {
-  height: 125px;
-  width: 125px;
+  height: 115px;
+  width: 115px;
   border-radius: 10px;
   border-color: red;
-  font-size: 76pt;
+  font-size: 4.5rem;
   margin: 5px;
+  background: var(--primary-glow);
 }
 
 button.selected {
@@ -68,11 +86,12 @@ button.selected {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 5px;
+  padding: 5px 20px;
 }
 
 table.scorecardTable {
   border: 1px solid white;
+  border-radius: 10px;
   text-align: center;
   width: 100%;
   table-layout: fixed;

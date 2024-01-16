@@ -6,6 +6,10 @@ import Scorecard from '@/components/Scorecard';
 import generateInitialScorecardState, {
   checkForMatchingNumbers,
 } from '../scorecardState';
+import {
+  generateInitialDiceValuesState,
+  generateInitialTotalsState,
+} from '@/initialStateFunctions';
 
 export default function Game() {
   const [currentTurn, setCurrentTurn] = useState(0);
@@ -16,6 +20,10 @@ export default function Game() {
   const [hasSelectedPointsThisTurn, setHasSelectedPointsThisTurn] = useState(false);
 
   function handleRollClicked() {
+    if (currentTurn === 3 && !hasSelectedPointsThisTurn) {
+      return;
+    }
+
     if (hasSelectedPointsThisTurn) {
       setHasSelectedPointsThisTurn(false);
     }
@@ -174,7 +182,12 @@ export default function Game() {
   return (
     <div className={styles.game}>
       <div className={styles.leftSideOfGame}>
-        <button onClick={handleRollClicked}>ROLL</button>
+        <button
+          className={`${styles.roll} ${styles.boldText}`}
+          onClick={handleRollClicked}
+        >
+          ROLL
+        </button>
         <div className={styles.dice}>
           {diceValues.map((die) => (
             <Die
@@ -191,8 +204,8 @@ export default function Game() {
       <div className={styles.rightSideOfGame}>
         <div className={styles.scorecardHeading}>
           <h3>Scorecard</h3>
-          <p>{`Roll ${currentTurn} / 3`}</p>
-          <p>{`Turn ${currentRound} / 13`}</p>
+          <p className={styles.boldText}>{`Roll ${currentTurn} / 3`}</p>
+          <p className={styles.boldText}>{`Turn ${currentRound} / 13`}</p>
         </div>
 
         <Scorecard
@@ -215,26 +228,6 @@ function Die({ id, value, isSelected, handleDieClicked }) {
       {value}
     </button>
   );
-}
-
-function generateInitialDiceValuesState() {
-  const dice = [1, 2, 3, 4, 5];
-  return dice.map((dieNumber) => ({
-    id: `die-${dieNumber}`,
-    value: '-',
-    isSelected: false,
-  }));
-}
-
-function generateInitialTotalsState() {
-  return {
-    upperSectionSubTotal: undefined,
-    upperSectionBonus: undefined,
-    upperSectionTotal: undefined,
-    yachtseaBonusTotal: undefined,
-    lowerSectionTotal: undefined,
-    grandTotal: undefined,
-  };
 }
 
 function rollSixSidedDie() {
