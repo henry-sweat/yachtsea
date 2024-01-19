@@ -1,10 +1,5 @@
-'use client';
+import { upperSectionDetails, lowerSectionDetails, yachtseaBonusSymbol } from '@/utils/constants';
 import styles from '../app/page.module.css';
-import {
-  upperSectionDetails,
-  lowerSectionDetails,
-  yachtseaBonusSymbol,
-} from '@/data/scorecardDetails';
 
 export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
   function generateUpperSectionOfScorecard(scorecardDetails) {
@@ -17,11 +12,7 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
             <strong>{scorecard.rows[row.index].earnedPoints}</strong>
           </td>
         ) : (
-          <td
-            id={row.id}
-            className={styles.potentialPoints}
-            onClick={handlePointsClicked}
-          >
+          <td id={row.id} className={styles.potentialPoints} onClick={handlePointsClicked}>
             {scorecard.rows[row.index].potentialPoints}
           </td>
         )}
@@ -39,11 +30,7 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
             <strong>{scorecard.rows[row.index].earnedPoints}</strong>
           </td>
         ) : (
-          <td
-            id={row.id}
-            className={styles.potentialPoints}
-            onClick={handlePointsClicked}
-          >
+          <td id={row.id} className={styles.potentialPoints} onClick={handlePointsClicked}>
             {scorecard.rows[row.index].potentialPoints}
           </td>
         )}
@@ -84,7 +71,7 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
           </tr>
           {generateLowerSectionOfScorecard(lowerSectionDetails)}
           <tr>
-            <td className={styles.boldText} rowSpan={'2'}>
+            <td className={styles.boldText} rowSpan={2}>
               {'YACHTSEA BONUS'}
             </td>
             <td>{'X per Bonus'}</td>
