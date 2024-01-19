@@ -53,6 +53,8 @@ export function checkForStraight(lengthOfSequence: number): PotentialPointsFn {
           values[i + 3] === values[i] + 3
         ) {
           return 30;
+        } else {
+          return 0;
         }
       }
     } else if (lengthOfSequence === 5) {
@@ -63,9 +65,9 @@ export function checkForStraight(lengthOfSequence: number): PotentialPointsFn {
         values[4] === values[0] + 4
       ) {
         return 40;
+      } else {
+        return 0;
       }
-    } else {
-      return 0;
     }
   };
 }
