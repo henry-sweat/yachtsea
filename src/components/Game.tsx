@@ -1,23 +1,22 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
-import styles from '../app/page.module.css';
 import Scorecard from '@/components/Scorecard';
-import generateInitialScorecardState, {
-  checkForMatchingNumbers,
-} from '../scorecardState';
 import {
+  generateInitialScorecardState,
   generateInitialDiceValuesState,
   generateInitialTotalsState,
-} from '@/initialStateFunctions';
+} from '@/data/initialStateFunctions';
+import { checkForMatchingNumbers } from '@/data/potentialPointsFunctions';
+import type { IScorecard, IScorecardRow, IDie, ITotals } from '@/types';
+import styles from '../app/page.module.css';
 
 export default function Game() {
-  const [currentTurn, setCurrentTurn] = useState(0);
-  const [currentRound, setCurrentRound] = useState(1);
-  const [diceValues, setDiceValues] = useState(generateInitialDiceValuesState());
-  const [scorecard, setScorecard] = useState(generateInitialScorecardState());
-  const [totals, setTotals] = useState(generateInitialTotalsState());
-  const [hasSelectedPointsThisTurn, setHasSelectedPointsThisTurn] = useState(false);
+  const [currentTurn, setCurrentTurn] = useState<number>(0);
+  const [currentRound, setCurrentRound] = useState<number>(1);
+  const [diceValues, setDiceValues] = useState<IDie[]>(generateInitialDiceValuesState());
+  const [scorecard, setScorecard] = useState<IScorecard>(generateInitialScorecardState());
+  const [totals, setTotals] = useState<ITotals>(generateInitialTotalsState());
+  const [hasSelectedPointsThisTurn, setHasSelectedPointsThisTurn] = useState<boolean>(false);
 
   function handleRollClicked() {
     if (currentTurn === 3 && !hasSelectedPointsThisTurn) {
@@ -27,7 +26,7 @@ export default function Game() {
     if (hasSelectedPointsThisTurn) {
       setHasSelectedPointsThisTurn(false);
     }
-    let newDiceValues;
+    let newDiceValues: Array<IDie>;
     let nextTurn = currentTurn + 1;
     if (nextTurn > 3) {
       newDiceValues = diceValues.map((die) => ({
@@ -39,17 +38,16 @@ export default function Game() {
       setCurrentTurn(1);
       if (currentRound + 1 === 14) {
         setCurrentRound(1);
-        let newScorecard = {};
-        newScorecard.rows = scorecard.rows.map((row) => {
-          return {
-            id: row.id,
-            earnedPoints: undefined,
-            potentialPoints: row.potentialPointsFunction(newDiceValues),
-            potentialPointsFunction: row.potentialPointsFunction,
-          };
-        });
-        newScorecard.yachtseaBonus = {
-          numberOfBonuses: 0,
+        let newScorecard: IScorecard = {
+          rows: scorecard.rows.map((row) => {
+            return {
+              id: row.id,
+              earnedPoints: undefined,
+              potentialPoints: row.potentialPointsFunction(newDiceValues),
+              potentialPointsFunction: row.potentialPointsFunction,
+            };
+          }),
+          yachtseaBonus: { numberOfBonuses: 0 },
         };
         setScorecard(newScorecard);
         setTotals(generateInitialTotalsState());
@@ -67,21 +65,22 @@ export default function Game() {
       setCurrentTurn(currentTurn + 1);
     }
 
-    let newScorecard = {};
-    newScorecard.rows = scorecard.rows.map((row) => {
-      if (row.earnedPoints >= 0) {
-        return row;
-      } else {
-        return {
-          id: row.id,
-          earnedPoints: row.earnedPoints,
-          potentialPoints: row.potentialPointsFunction(newDiceValues),
-          potentialPointsFunction: row.potentialPointsFunction,
-        };
-      }
-    });
-    newScorecard.yachtseaBonus = {
-      numberOfBonuses: calculateNumberOfYachtseaBonuses(newDiceValues),
+    let newScorecard: IScorecard = {
+      rows: scorecard.rows.map((row): IScorecardRow => {
+        if (row.earnedPoints >= 0) {
+          return row;
+        } else {
+          return {
+            id: row.id,
+            earnedPoints: row.earnedPoints,
+            potentialPoints: row.potentialPointsFunction(newDiceValues),
+            potentialPointsFunction: row.potentialPointsFunction,
+          };
+        }
+      }),
+      yachtseaBonus: {
+        numberOfBonuses: calculateNumberOfYachtseaBonuses(newDiceValues),
+      },
     };
     setScorecard(newScorecard);
   }
@@ -91,9 +90,8 @@ export default function Game() {
       return;
     }
     let indexOfClickedDie = e.target.id[4] - 1;
-    let newDiceValues = [...diceValues];
-    newDiceValues[indexOfClickedDie].isSelected =
-      !newDiceValues[indexOfClickedDie].isSelected;
+    let newDiceValues: IDie[] = [...diceValues];
+    newDiceValues[indexOfClickedDie].isSelected = !newDiceValues[indexOfClickedDie].isSelected;
     setDiceValues(newDiceValues);
   }
 
@@ -107,16 +105,18 @@ export default function Game() {
     if (scorecard.rows[indexOfClickedRow].earnedPoints >= 0) {
       return;
     } else {
-      let newScorecard = { ...scorecard };
+      let newScorecard: IScorecard = { ...scorecard };
       newScorecard.rows[indexOfClickedRow].earnedPoints =
         newScorecard.rows[indexOfClickedRow].potentialPoints;
       setScorecard(newScorecard);
     }
-    let newDiceValues = diceValues.map((die) => ({
-      id: die.id,
-      value: die.value,
-      isSelected: true,
-    }));
+    let newDiceValues: IDie[] = diceValues.map(
+      (die): IDie => ({
+        id: die.id,
+        value: die.value,
+        isSelected: true,
+      })
+    );
     setDiceValues(newDiceValues);
     setCurrentTurn(3);
     recalculateTotals();
@@ -124,7 +124,7 @@ export default function Game() {
   }
 
   function recalculateTotals() {
-    let newTotals = { ...totals };
+    let newTotals: ITotals = { ...totals };
     const [upperSectionSubTotal, upperSectionBonus, upperSectionTotal] =
       calculateUpperSectionTotals();
     const [yachtseaBonusTotal, lowerSectionTotal] = calculateLowerSectionTotals();
@@ -170,8 +170,7 @@ export default function Game() {
   function calculateNumberOfYachtseaBonuses(mostRecentRoll) {
     const currentNumberOfYachtseaBonuses = scorecard.yachtseaBonus.numberOfBonuses;
     const checkForYachtseaFunction = checkForMatchingNumbers(5);
-    const isCurrentRollAYachtsea =
-      checkForYachtseaFunction(mostRecentRoll) === 50 ? true : false;
+    const isCurrentRollAYachtsea = checkForYachtseaFunction(mostRecentRoll) === 50 ? true : false;
     if (isCurrentRollAYachtsea && scorecard.rows[11].earnedPoints === 50) {
       return currentNumberOfYachtseaBonuses + 1;
     } else {
@@ -182,10 +181,7 @@ export default function Game() {
   return (
     <div className={styles.game}>
       <div className={styles.leftSideOfGame}>
-        <button
-          className={`${styles.roll} ${styles.boldText}`}
-          onClick={handleRollClicked}
-        >
+        <button className={`${styles.roll} ${styles.boldText}`} onClick={handleRollClicked}>
           ROLL
         </button>
         <div className={styles.dice}>
