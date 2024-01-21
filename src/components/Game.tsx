@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Scorecard from '@/components/Scorecard';
+import DiceContainer from './DiceContainer/DiceContainer';
 import {
   generateInitialScorecardState,
   generateInitialDiceValuesState,
@@ -184,17 +185,7 @@ export default function Game() {
         <button className={`${styles.roll} ${styles.boldText}`} onClick={handleRollClicked}>
           ROLL
         </button>
-        <div className={styles.dice}>
-          {diceValues.map((die) => (
-            <Die
-              key={die.id}
-              id={die.id}
-              value={die.value}
-              isSelected={die.isSelected}
-              handleDieClicked={handleDieClicked}
-            />
-          ))}
-        </div>
+        <DiceContainer diceValues={diceValues} handleDieClicked={handleDieClicked} />
       </div>
 
       <div className={styles.rightSideOfGame}>
@@ -211,18 +202,6 @@ export default function Game() {
         />
       </div>
     </div>
-  );
-}
-
-function Die({ id, value, isSelected, handleDieClicked }) {
-  return (
-    <button
-      id={id}
-      className={`${styles.die} ${isSelected ? styles.selected : ''}`}
-      onClick={handleDieClicked}
-    >
-      {value}
-    </button>
   );
 }
 

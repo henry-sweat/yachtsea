@@ -30,26 +30,6 @@ button.roll {
   margin: 5px;
 }
 
-.dice {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-}
-
-button.die {
-  height: 115px;
-  width: 115px;
-  border-radius: var(--border-radius);
-  border-color: red;
-  font-size: 4.5rem;
-  margin: 5px;
-  background: var(--primary-glow);
-}
-
-button.selected {
-  border-color: green;
-}
-
 .scorecard {
   width: 400px;
 }
