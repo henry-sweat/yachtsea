@@ -1,8 +1,7 @@
 'use client';
 import useGameStateStore, { useGameActions } from '@/stores/gameState';
-import Scorecard from '@/components/Scorecard';
-import DiceContainer from './DiceContainer/DiceContainer';
-import styles from '../app/page.module.css';
+import { Scorecard, DiceContainer } from '@/components';
+import styles from './Game.module.css';
 
 export default function Game() {
   const rollCounter = useGameStateStore((state) => state.rollCounter);
