@@ -1,3 +1,28 @@
+export interface IGameState {
+  rollCounter: number;
+  roundCounter: number;
+  dice: IDie[];
+  scorecard: IScorecard;
+  totals: ITotals;
+  userHasSelectedPointsThisRound: boolean;
+  actions: {
+    updateGameStateForRollButtonClicked: () => void;
+    updateDiceStateForDieClicked: (indexOfClickedDie: number) => void;
+    updateGameStateForPointsClicked: (indexOfClickedRow: number) => void;
+    updateTotalsWithScorecard: (scorecard: IScorecard) => void;
+    updateRollCounter: () => void;
+    updateRoundCounter: () => void;
+  };
+  setters: {
+    setRollCounter: (nextRoll: number) => void;
+    setRoundCounter: (nextRound: number) => void;
+    setDice: (newDice: IDie[]) => void;
+    setScorecard: (newScorecard: IScorecard) => void;
+    setTotals: (newTotals: ITotals) => void;
+    setUserHasSelectedPointsThisRound: (bool: boolean) => void;
+  };
+}
+
 export interface IScorecard {
   rows: Array<IScorecardRow>;
   yachtseaBonus: IScorecardYachtseaBonus;

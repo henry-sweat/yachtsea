@@ -51,7 +51,7 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
         <tbody>
           {generateUpperSectionOfScorecard(upperSectionDetails)}
           <tr>
-            <td className={styles.boldText}>{'TOTAL SCORE'}</td>
+            <td className={styles.boldText}>{'SUBTOTAL'}</td>
             <td>{'--->'}</td>
             <td>
               {totals.upperSectionSubTotal === undefined
