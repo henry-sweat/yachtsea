@@ -1,4 +1,4 @@
-import Game from '@/components/Game';
+import { Game } from '@/components';
 import styles from './page.module.css';
 
 export default function Home() {

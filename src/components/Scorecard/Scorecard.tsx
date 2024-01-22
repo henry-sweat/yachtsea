@@ -1,5 +1,5 @@
 import { upperSectionDetails, lowerSectionDetails, yachtseaBonusSymbol } from '@/utils/constants';
-import styles from '../app/page.module.css';
+import styles from './Scorecard.module.css';
 
 export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
   function generateUpperSectionOfScorecard(scorecardDetails) {

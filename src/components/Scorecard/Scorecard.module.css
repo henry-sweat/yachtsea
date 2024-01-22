@@ -1,0 +1,25 @@
+.scorecard {
+  width: 400px;
+}
+
+table.scorecardTable {
+  border: 1px solid white;
+  border-radius: var(--border-radius);
+  text-align: center;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+th.upperSectionHeaderRow {
+  width: 33.333%;
+}
+
+.grandTotalRow {
+  border: 1px solid white;
+}
+
+.potentialPoints {
+  color: gray;
+}

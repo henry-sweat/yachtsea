@@ -7,66 +7,6 @@
   min-height: 100vh;
 }
 
-.game {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 575px;
-}
-
-.leftSideOfGame {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-button.roll {
-  background: var(--secondary-glow);
-  width: 115px;
-  font-size: 1.2rem;
-  border-radius: var(--border-radius);
-  border-color: white;
-  padding: 5px;
-  margin: 5px;
-}
-
-.scorecard {
-  width: 400px;
-}
-
-.scorecardHeading {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 5px 20px;
-}
-
-table.scorecardTable {
-  border: 1px solid white;
-  border-radius: var(--border-radius);
-  text-align: center;
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-}
-
-th.upperSectionHeaderRow {
-  width: 33.333%;
-}
-
-.grandTotalRow {
-  border: 1px solid white;
-}
-
-.potentialPoints {
-  color: gray;
-}
-
-.boldText {
-  font-weight: 700;
-}
-
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
 }
