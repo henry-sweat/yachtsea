@@ -53,10 +53,9 @@ export function checkForStraight(lengthOfSequence: number): PotentialPointsFn {
           values[i + 3] === values[i] + 3
         ) {
           return 30;
-        } else {
-          return 0;
         }
       }
+      return 0;
     } else if (lengthOfSequence === 5) {
       if (
         values[1] === values[0] + 1 &&
@@ -65,9 +64,8 @@ export function checkForStraight(lengthOfSequence: number): PotentialPointsFn {
         values[4] === values[0] + 4
       ) {
         return 40;
-      } else {
-        return 0;
       }
+      return 0;
     }
   };
 }
@@ -90,3 +88,5 @@ function sortAndRemoveDuplicates(diceValues: IDie[]): number[] {
   );
   return trimmedDiceValues;
 }
+
+export const checkForYachtseaFn = checkForMatchingNumbers(5);
