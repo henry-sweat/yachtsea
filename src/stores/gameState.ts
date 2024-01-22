@@ -5,9 +5,9 @@ import {
   generateInitialTotalsState,
 } from '@/data/initialStateFunctions';
 import { checkForYachtseaFn } from '@/data/potentialPointsFunctions';
-import { IScorecard, IScorecardRow, IDie, ITotals } from '@/types';
+import { IGameState, IScorecard, IScorecardRow, IDie, ITotals } from '@/types';
 
-const useGameStateStore = create((set) => ({
+const useGameStateStore = create<IGameState>((set) => ({
   rollCounter: 0,
   roundCounter: 1,
   dice: generateInitialDiceValuesState(),
