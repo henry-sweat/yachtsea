@@ -1,6 +1,6 @@
 'use client';
 import useGameStateStore, { useGameActions } from '@/stores/gameState';
-import { Scorecard, DiceContainer } from '@/components';
+import { Scorecard, RollButton, DiceContainer } from '@/components';
 import styles from './Game.module.css';
 
 export default function Game() {
@@ -12,18 +12,7 @@ export default function Game() {
   const userHasSelectedPointsThisRound = useGameStateStore(
     (state) => state.userHasSelectedPointsThisRound
   );
-  const {
-    updateGameStateForRollButtonClicked,
-    updateDiceStateForDieClicked,
-    updateGameStateForPointsClicked,
-  } = useGameActions();
-
-  function handleRollClicked() {
-    if (rollCounter === 3 && !userHasSelectedPointsThisRound) {
-      return;
-    }
-    updateGameStateForRollButtonClicked();
-  }
+  const { updateDiceStateForDieClicked, updateGameStateForPointsClicked } = useGameActions();
 
   function handleDieClicked(e) {
     if (rollCounter === 3 || rollCounter === 0) {
@@ -47,9 +36,7 @@ export default function Game() {
   return (
     <div className={styles.game}>
       <div className={styles.leftSideOfGame}>
-        <button className={`${styles.roll} ${styles.boldText}`} onClick={handleRollClicked}>
-          ROLL
-        </button>
+        <RollButton />
         <DiceContainer diceValues={dice} handleDieClicked={handleDieClicked} />
       </div>
       <div className={styles.rightSideOfGame}>

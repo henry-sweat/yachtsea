@@ -1,0 +1,10 @@
+button.roll {
+  background: var(--secondary-glow);
+  width: 115px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: var(--border-radius);
+  border-color: white;
+  padding: 5px;
+  margin: 5px;
+}
