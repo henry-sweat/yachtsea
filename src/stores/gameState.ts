@@ -13,7 +13,7 @@ const useGameStateStore = create<IGameState>((set) => ({
   dice: generateInitialDiceValuesState(),
   scorecard: generateInitialScorecardState(),
   totals: generateInitialTotalsState(),
-  userHasSelectedPointsThisRound: false,
+  userHasSelectedPoints: false,
   actions: {
     updateGameStateForRollButtonClicked: () =>
       set(
@@ -22,30 +22,30 @@ const useGameStateStore = create<IGameState>((set) => ({
           roundCounter,
           dice,
           scorecard,
-          userHasSelectedPointsThisRound,
+          userHasSelectedPoints,
           actions,
           setters,
         }) => {
           const { updateRollCounter, updateRoundCounter } = actions;
-          const { setDice, setScorecard, setUserHasSelectedPointsThisRound, setTotals } = setters;
+          const { setDice, setScorecard, setUserHasSelectedPoints, setTotals } = setters;
 
           updateRollCounter();
 
-          if (userHasSelectedPointsThisRound) {
+          if (userHasSelectedPoints) {
             updateRoundCounter();
-            setUserHasSelectedPointsThisRound(false);
+            setUserHasSelectedPoints(false);
           }
 
-          let newDice: IDie[] = userHasSelectedPointsThisRound
+          let newDice: IDie[] = userHasSelectedPoints
             ? rollAndResetAllDice(dice)
             : rollUnselectedDice(dice, rollCounter);
 
           let newScorecard: IScorecard =
-            userHasSelectedPointsThisRound && roundCounter === 13
+            userHasSelectedPoints && roundCounter === 13
               ? resetScorecardWithNewDice(newDice, scorecard)
               : updateScorecardForLatestRoll(newDice, scorecard);
 
-          if (userHasSelectedPointsThisRound && roundCounter === 13) {
+          if (userHasSelectedPoints && roundCounter === 13) {
             setTotals(generateInitialTotalsState());
           }
 
@@ -66,7 +66,7 @@ const useGameStateStore = create<IGameState>((set) => ({
     updateGameStateForPointsClicked: (indexOfClickedRow) =>
       set(({ dice, scorecard, actions, setters }) => {
         const { updateTotalsWithScorecard } = actions;
-        const { setDice, setScorecard, setUserHasSelectedPointsThisRound } = setters;
+        const { setDice, setScorecard, setUserHasSelectedPoints } = setters;
 
         let newScorecard: IScorecard = { ...scorecard };
 
@@ -78,7 +78,7 @@ const useGameStateStore = create<IGameState>((set) => ({
         setDice(newDice);
         setScorecard(newScorecard);
         updateTotalsWithScorecard(newScorecard);
-        setUserHasSelectedPointsThisRound(true);
+        setUserHasSelectedPoints(true);
         return {};
       }),
     updateTotalsWithScorecard: (scorecard: IScorecard) =>
@@ -89,9 +89,9 @@ const useGameStateStore = create<IGameState>((set) => ({
         return {};
       }),
     updateRollCounter: () =>
-      set(({ rollCounter, userHasSelectedPointsThisRound, setters }) => {
+      set(({ rollCounter, userHasSelectedPoints, setters }) => {
         const { setRollCounter } = setters;
-        if (rollCounter < 3 && !userHasSelectedPointsThisRound) {
+        if (rollCounter < 3 && !userHasSelectedPoints) {
           setRollCounter(rollCounter + 1);
         } else {
           setRollCounter(1);
@@ -116,8 +116,7 @@ const useGameStateStore = create<IGameState>((set) => ({
     setDice: (newDice: IDie[]) => set({ dice: newDice }),
     setScorecard: (newScorecard: IScorecard) => set({ scorecard: newScorecard }),
     setTotals: (newTotals: ITotals) => set({ totals: newTotals }),
-    setUserHasSelectedPointsThisRound: (bool: boolean) =>
-      set({ userHasSelectedPointsThisRound: bool }),
+    setUserHasSelectedPoints: (bool: boolean) => set({ userHasSelectedPoints: bool }),
   },
 }));
 
