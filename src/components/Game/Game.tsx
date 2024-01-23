@@ -12,11 +12,7 @@ export default function Game() {
   const userHasSelectedPointsThisRound = useGameStateStore(
     (state) => state.userHasSelectedPointsThisRound
   );
-  const {
-    updateGameStateForRollButtonClicked,
-    updateDiceStateForDieClicked,
-    updateGameStateForPointsClicked,
-  } = useGameActions();
+  const { updateDiceStateForDieClicked, updateGameStateForPointsClicked } = useGameActions();
 
   function handleDieClicked(e) {
     if (rollCounter === 3 || rollCounter === 0) {
