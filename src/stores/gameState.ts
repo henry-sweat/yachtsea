@@ -27,7 +27,7 @@ const useGameStateStore = create<IGameState>((set) => ({
           setters,
         }) => {
           const { updateRollCounter, updateRoundCounter } = actions;
-          const { setDice, setScorecard, setUserHasSelectedPointsThisRound } = setters;
+          const { setDice, setScorecard, setUserHasSelectedPointsThisRound, setTotals } = setters;
 
           updateRollCounter();
 
@@ -44,6 +44,10 @@ const useGameStateStore = create<IGameState>((set) => ({
             userHasSelectedPointsThisRound && roundCounter === 13
               ? resetScorecardWithNewDice(newDice, scorecard)
               : updateScorecardForLatestRoll(newDice, scorecard);
+
+          if (userHasSelectedPointsThisRound && roundCounter === 13) {
+            setTotals(generateInitialTotalsState());
+          }
 
           setDice(newDice);
           setScorecard(newScorecard);

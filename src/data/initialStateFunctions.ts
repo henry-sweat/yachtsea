@@ -27,12 +27,12 @@ export function generateInitialDiceValuesState(): Array<IDie> {
 
 export function generateInitialTotalsState(): ITotals {
   return {
-    upperSectionSubTotal: undefined,
-    upperSectionBonus: undefined,
-    upperSectionTotal: undefined,
-    yachtseaBonusTotal: undefined,
-    lowerSectionTotal: undefined,
-    grandTotal: undefined,
+    upperSectionSubTotal: 0,
+    upperSectionBonus: 0,
+    upperSectionTotal: 0,
+    yachtseaBonusTotal: 0,
+    lowerSectionTotal: 0,
+    grandTotal: 0,
   };
 }
 

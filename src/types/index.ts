@@ -46,12 +46,12 @@ export interface IDie {
 }
 
 export interface ITotals {
-  upperSectionSubTotal: undefined | number;
-  upperSectionBonus: undefined | number;
-  upperSectionTotal: undefined | number;
-  yachtseaBonusTotal: undefined | number;
-  lowerSectionTotal: undefined | number;
-  grandTotal: undefined | number;
+  upperSectionSubTotal: number;
+  upperSectionBonus: number;
+  upperSectionTotal: number;
+  yachtseaBonusTotal: number;
+  lowerSectionTotal: number;
+  grandTotal: number;
 }
 
 export type PotentialPointsFn = (diceValues: IDie[]) => number;
