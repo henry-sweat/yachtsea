@@ -11,16 +11,6 @@
   align-items: center;
 }
 
-button.roll {
-  background: var(--secondary-glow);
-  width: 115px;
-  font-size: 1.2rem;
-  border-radius: var(--border-radius);
-  border-color: white;
-  padding: 5px;
-  margin: 5px;
-}
-
 .scorecardHeading {
   display: flex;
   flex-direction: row;
