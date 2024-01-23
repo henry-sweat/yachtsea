@@ -4,7 +4,7 @@ export interface IGameState {
   dice: IDie[];
   scorecard: IScorecard;
   totals: ITotals;
-  userHasSelectedPointsThisRound: boolean;
+  userHasSelectedPoints: boolean;
   actions: {
     updateGameStateForRollButtonClicked: () => void;
     updateDiceStateForDieClicked: (indexOfClickedDie: number) => void;
@@ -19,7 +19,7 @@ export interface IGameState {
     setDice: (newDice: IDie[]) => void;
     setScorecard: (newScorecard: IScorecard) => void;
     setTotals: (newTotals: ITotals) => void;
-    setUserHasSelectedPointsThisRound: (bool: boolean) => void;
+    setUserHasSelectedPoints: (bool: boolean) => void;
   };
 }
 

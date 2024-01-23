@@ -1,7 +1,25 @@
+import useGameStateStore, { useGameActions } from '@/stores/gameState';
 import { upperSectionDetails, lowerSectionDetails, yachtseaBonusSymbol } from '@/utils/constants';
 import styles from './Scorecard.module.css';
 
-export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
+export default function Scorecard() {
+  const rollCounter = useGameStateStore((state) => state.rollCounter);
+  const scorecard = useGameStateStore((state) => state.scorecard);
+  const totals = useGameStateStore((state) => state.totals);
+  const userHasSelectedPoints = useGameStateStore((state) => state.userHasSelectedPoints);
+  const { updateGameStateForPointsClicked } = useGameActions();
+
+  function handlePointsClicked(e) {
+    if (rollCounter === 0 || userHasSelectedPoints) {
+      return;
+    }
+    const indexOfClickedRow = e.target.id.slice(4) - 1;
+    if (scorecard.rows[indexOfClickedRow].earnedPoints >= 0) {
+      return;
+    }
+    updateGameStateForPointsClicked(indexOfClickedRow);
+  }
+
   function generateUpperSectionOfScorecard(scorecardDetails) {
     return scorecardDetails.map((row) => (
       <tr key={row.id}>
@@ -53,11 +71,7 @@ export default function Scorecard({ scorecard, totals, handlePointsClicked }) {
           <tr>
             <td className={styles.boldText}>{'SUBTOTAL'}</td>
             <td>{'--->'}</td>
-            <td>
-              {totals.upperSectionSubTotal === undefined
-                ? undefined
-                : `${totals.upperSectionSubTotal} / 63`}
-            </td>
+            <td>{`${totals.upperSectionSubTotal} / 63`}</td>
           </tr>
           <tr>
             <td className={styles.boldText}>{'BONUS'}</td>

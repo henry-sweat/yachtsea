@@ -1,9 +1,23 @@
+import useGameStateStore, { useGameActions } from '@/stores/gameState';
 import styles from './DiceContainer.module.css';
 
-export default function DiceContainer({ diceValues, handleDieClicked }) {
+export default function DiceContainer() {
+  const rollCounter = useGameStateStore((state) => state.rollCounter);
+  const dice = useGameStateStore((state) => state.dice);
+
+  const { updateDiceStateForDieClicked } = useGameActions();
+
+  function handleDieClicked(e) {
+    if (rollCounter === 3 || rollCounter === 0) {
+      return;
+    }
+    const indexOfClickedDie = e.target.id.slice(4) - 1;
+    updateDiceStateForDieClicked(indexOfClickedDie);
+  }
+
   return (
     <div className={styles.dice}>
-      {diceValues.map(({ id, value, isSelected }) => (
+      {dice.map(({ id, value, isSelected }) => (
         <Die
           key={id}
           id={id}
