@@ -1,0 +1,10 @@
+.authButton {
+  background: var(--secondary-glow);
+  width: 90px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--border-radius);
+  border-color: white;
+  padding: 5px;
+  margin: 5px;
+}

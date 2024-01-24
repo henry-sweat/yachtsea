@@ -1,0 +1,41 @@
+.header {
+  position: sticky;
+  top: 0; /* You may need to adjust this based on your layout */
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid; /* Default color is black, adjust as necessary */
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 64px; /* Assuming 1 unit = 4px */
+  max-width: 768px; /* 3xl size */
+  padding: 0 16px; /* Assuming 1 unit = 4px */
+  margin: 0 auto;
+}
+
+.mainNav {
+  display: flex;
+  align-items: center;
+}
+
+.mainNav > * + * {
+  margin-left: 8px; /* Assuming 1 unit = 4px, so 2 units = 8px */
+}
+
+@media (min-width: 1024px) {
+  /* Assuming 'lg' breakpoint is 1024px */
+  .mainNav > * + * {
+    margin-left: 24px; /* Assuming 1 unit = 4px, so 6 units = 24px */
+  }
+}
+
+@media (min-width: 640px) {
+  /* Assuming 'sm' breakpoint is 640px */
+  .headerContainer {
+    padding: 0 24px; /* Assuming 1 unit = 4px */
+  }
+}
