@@ -12,6 +12,7 @@
   font-size: 4.5rem;
   margin: 5px;
   background: var(--primary-glow);
+  color: white;
 }
 
 .selected {

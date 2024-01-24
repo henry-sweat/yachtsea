@@ -1,5 +1,6 @@
 button.roll {
   background: var(--secondary-glow);
+  color: white;
   width: 115px;
   font-size: 1.2rem;
   font-weight: 700;
