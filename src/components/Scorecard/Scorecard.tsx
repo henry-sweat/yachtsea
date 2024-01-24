@@ -60,10 +60,10 @@ export default function Scorecard() {
     <div className={styles.scorecard}>
       <table className={styles.scorecardTable}>
         <thead>
-          <tr>
-            <th className={styles.upperSectionHeaderRow}>Upper Section</th>
-            <th className={styles.upperSectionHeaderRow}>How To Score</th>
-            <th className={styles.upperSectionHeaderRow}>Points Earned</th>
+          <tr className={styles.upperSectionHeaderRow}>
+            <th>Upper Section</th>
+            <th>How To Score</th>
+            <th>Points Earned</th>
           </tr>
         </thead>
         <tbody>
