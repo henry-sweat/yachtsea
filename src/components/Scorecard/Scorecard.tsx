@@ -1,111 +1,116 @@
-import useGameStateStore, { useGameActions } from '@/stores/gameState';
-import { upperSectionDetails, lowerSectionDetails, yachtseaBonusSymbol } from '@/utils/constants';
+import { PointsCell, TotalCell, YachtseaBonusCell } from './ScorecardNumberCells';
 import styles from './Scorecard.module.css';
 
 export default function Scorecard() {
-  const rollCounter = useGameStateStore((state) => state.rollCounter);
-  const scorecard = useGameStateStore((state) => state.scorecard);
-  const totals = useGameStateStore((state) => state.totals);
-  const userHasSelectedPoints = useGameStateStore((state) => state.userHasSelectedPoints);
-  const { updateGameStateForPointsClicked } = useGameActions();
-
-  function handlePointsClicked(e) {
-    if (rollCounter === 0 || userHasSelectedPoints) {
-      return;
-    }
-    const indexOfClickedRow = e.target.id.slice(4) - 1;
-    if (scorecard.rows[indexOfClickedRow].earnedPoints >= 0) {
-      return;
-    }
-    updateGameStateForPointsClicked(indexOfClickedRow);
-  }
-
-  function generateUpperSectionOfScorecard(scorecardDetails) {
-    return scorecardDetails.map((row) => (
-      <tr key={row.id}>
-        <td>{row.numberTextAllCaps}</td>
-        <td>{`Add Only ${row.numberText}`}</td>
-        {scorecard.rows[row.index].earnedPoints >= 0 ? (
-          <td id={row.id} className={styles.earnedPoints}>
-            <strong>{scorecard.rows[row.index].earnedPoints}</strong>
-          </td>
-        ) : (
-          <td id={row.id} className={styles.potentialPoints} onClick={handlePointsClicked}>
-            {scorecard.rows[row.index].potentialPoints}
-          </td>
-        )}
-      </tr>
-    ));
-  }
-
-  function generateLowerSectionOfScorecard(scorecardDetails) {
-    return scorecardDetails.map((row) => (
-      <tr key={row.id}>
-        <td>{row.category}</td>
-        <td>{row.description}</td>
-        {scorecard.rows[row.index].earnedPoints >= 0 ? (
-          <td id={row.id} className={styles.earnedPoints}>
-            <strong>{scorecard.rows[row.index].earnedPoints}</strong>
-          </td>
-        ) : (
-          <td id={row.id} className={styles.potentialPoints} onClick={handlePointsClicked}>
-            {scorecard.rows[row.index].potentialPoints}
-          </td>
-        )}
-      </tr>
-    ));
-  }
-
   return (
     <div className={styles.scorecard}>
       <table className={styles.scorecardTable}>
         <thead>
-          <tr>
-            <th className={styles.upperSectionHeaderRow}>Upper Section</th>
-            <th className={styles.upperSectionHeaderRow}>How To Score</th>
-            <th className={styles.upperSectionHeaderRow}>Points Earned</th>
+          <tr className={styles.upperSectionHeaderRow}>
+            <th>{'Upper Section'}</th>
+            <th>{'How To Score'}</th>
+            <th>{'Points Earned'}</th>
           </tr>
         </thead>
         <tbody>
-          {generateUpperSectionOfScorecard(upperSectionDetails)}
           <tr>
-            <td className={styles.boldText}>{'SUBTOTAL'}</td>
-            <td>{'--->'}</td>
-            <td>{`${totals.upperSectionSubTotal} / 63`}</td>
+            <td>{'ONES'}</td>
+            <td>{'Add Only Ones'}</td>
+            <PointsCell scorecardStateIndex={0} />
           </tr>
           <tr>
-            <td className={styles.boldText}>{'BONUS'}</td>
-            <td>{'--->'}</td>
-            <td>{totals.upperSectionBonus}</td>
+            <td>{'TWOS'}</td>
+            <td>{'Add Only Twos'}</td>
+            <PointsCell scorecardStateIndex={1} />
           </tr>
           <tr>
-            <td className={styles.boldText}>{'UPPER TOTAL'}</td>
-            <td>{'--->'}</td>
-            <td>{totals.upperSectionTotal}</td>
+            <td>{'THREES'}</td>
+            <td>{'Add Only Threes'}</td>
+            <PointsCell scorecardStateIndex={2} />
           </tr>
-          {generateLowerSectionOfScorecard(lowerSectionDetails)}
           <tr>
-            <td className={styles.boldText} rowSpan={2}>
-              {'YACHTSEA BONUS'}
-            </td>
+            <td>{'FOURS'}</td>
+            <td>{'Add Only Fours'}</td>
+            <PointsCell scorecardStateIndex={3} />
+          </tr>
+          <tr>
+            <td>{'FIVES'}</td>
+            <td>{'Add Only Fives'}</td>
+            <PointsCell scorecardStateIndex={4} />
+          </tr>
+          <tr>
+            <td>{'SIXES'}</td>
+            <td>{'Add Only Sixes'}</td>
+            <PointsCell scorecardStateIndex={5} />
+          </tr>
+          <tr className={styles.total}>
+            <td>{'SUBTOTAL'}</td>
+            <td>{'--->'}</td>
+            <TotalCell totalsStateProperty={'upperSectionSubTotal'} />
+          </tr>
+          <tr className={styles.total}>
+            <td>{'BONUS'}</td>
+            <td>{'--->'}</td>
+            <TotalCell totalsStateProperty={'upperSectionBonus'} />
+          </tr>
+          <tr className={styles.total}>
+            <td>{'UPPER TOTAL'}</td>
+            <td>{'--->'}</td>
+            <TotalCell totalsStateProperty={'upperSectionTotal'} />
+          </tr>
+          <tr>
+            <td>{'3 of a Kind'}</td>
+            <td>{'Add All Dice'}</td>
+            <PointsCell scorecardStateIndex={6} />
+          </tr>
+          <tr>
+            <td>{'4 of a Kind'}</td>
+            <td>{'Add All Dice'}</td>
+            <PointsCell scorecardStateIndex={7} />
+          </tr>
+          <tr>
+            <td>{'Full House'}</td>
+            <td>{'Score 25'}</td>
+            <PointsCell scorecardStateIndex={8} />
+          </tr>
+          <tr>
+            <td>{'Small Straight'}</td>
+            <td>{'Score 30'}</td>
+            <PointsCell scorecardStateIndex={9} />
+          </tr>
+          <tr>
+            <td>{'Large Straight'}</td>
+            <td>{'Score 40'}</td>
+            <PointsCell scorecardStateIndex={10} />
+          </tr>
+          <tr>
+            <td>{'Yachtsea'}</td>
+            <td>{'Score 50'}</td>
+            <PointsCell scorecardStateIndex={11} />
+          </tr>
+          <tr>
+            <td>{'Chance'}</td>
+            <td>{'Add All Dice'}</td>
+            <PointsCell scorecardStateIndex={12} />
+          </tr>
+          <tr className={styles.total}>
+            <td rowSpan={2}>{'YACHTSEA BONUS'}</td>
             <td>{'X per Bonus'}</td>
-            <td id={'row-YachtseaBonusX'} className={styles.earnedPoints}>
-              {yachtseaBonusSymbol.repeat(scorecard.yachtseaBonus.numberOfBonuses)}
-            </td>
+            <YachtseaBonusCell />
           </tr>
-          <tr>
+          <tr className={styles.total}>
             <td>{'Score 100 per X'}</td>
-            <td>{totals.yachtseaBonusTotal}</td>
+            <TotalCell totalsStateProperty={'yachtseaBonusTotal'} />
           </tr>
-          <tr>
-            <td className={styles.boldText}>{'LOWER TOTAL'}</td>
+          <tr className={styles.total}>
+            <td>{'LOWER TOTAL'}</td>
             <td>{'--->'}</td>
-            <td>{totals.lowerSectionTotal}</td>
+            <TotalCell totalsStateProperty={'lowerSectionTotal'} />
           </tr>
-          <tr className={styles.grandTotalRow}>
-            <td className={styles.boldText}>{'GRAND TOTAL'}</td>
+          <tr className={styles.total}>
+            <td>{'GRAND TOTAL'}</td>
             <td>{'--->'}</td>
-            <td>{totals.grandTotal}</td>
+            <TotalCell totalsStateProperty={'grandTotal'} />
           </tr>
         </tbody>
       </table>
