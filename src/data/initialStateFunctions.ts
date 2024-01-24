@@ -1,12 +1,5 @@
 import { upperSectionDetails, lowerSectionDetails } from '@/utils/constants';
-import type {
-  IScorecard,
-  IScorecardRow,
-  IScorecardYachtseaBonus,
-  IDie,
-  ITotals,
-  PotentialPointsFn,
-} from '@/types';
+import type { IScorecard, IScorecardRow, IScorecardYachtseaBonus, IDie, ITotals } from '@/types';
 
 export function generateInitialScorecardState(): IScorecard {
   const scorecardState: IScorecard = {
@@ -37,22 +30,15 @@ export function generateInitialTotalsState(): ITotals {
 }
 
 function generateScorecardRowsState(): Array<IScorecardRow> {
-  const upperScorecardState: Array<IScorecardRow> = generateUpperScorecardState();
-  const lowerScorecardState: Array<IScorecardRow> = generateLowerScorecardState();
+  const upperScorecardState: Array<IScorecardRow> =
+    generateSectionOfScorecardState(upperSectionDetails);
+  const lowerScorecardState: Array<IScorecardRow> =
+    generateSectionOfScorecardState(lowerSectionDetails);
   return upperScorecardState.concat(lowerScorecardState);
 }
 
-function generateUpperScorecardState(): Array<IScorecardRow> {
-  return upperSectionDetails.map((row) => ({
-    id: row.id,
-    earnedPoints: undefined,
-    potentialPoints: undefined,
-    potentialPointsFunction: potentialPointsFunctionFactory(row.rowNumber),
-  }));
-}
-
-function generateLowerScorecardState(): Array<IScorecardRow> {
-  return lowerSectionDetails.map((row) => ({
+function generateSectionOfScorecardState(scorecardDetails): Array<IScorecardRow> {
+  return scorecardDetails.map((row) => ({
     id: row.id,
     earnedPoints: undefined,
     potentialPoints: undefined,
@@ -63,17 +49,5 @@ function generateLowerScorecardState(): Array<IScorecardRow> {
 function generateYachtseaBonusState(): IScorecardYachtseaBonus {
   return {
     numberOfBonuses: 0,
-  };
-}
-
-function potentialPointsFunctionFactory(dieValue: number): PotentialPointsFn {
-  return (newDiceValues) => {
-    let points = 0;
-    newDiceValues.forEach((die) => {
-      if (die.value === dieValue) {
-        points += dieValue;
-      }
-    });
-    return points;
   };
 }

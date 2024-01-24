@@ -16,8 +16,8 @@ th.upperSectionHeaderRow {
   width: 33.333%;
 }
 
-.grandTotalRow {
-  border: 1px solid white;
+.total {
+  font-weight: 700;
 }
 
 .potentialPoints {

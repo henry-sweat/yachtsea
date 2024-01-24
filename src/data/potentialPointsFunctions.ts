@@ -74,6 +74,18 @@ export function sumOfDiceValues(diceValues: IDie[]): number {
   return diceValues.reduce((sum, die) => sum + die.value, 0);
 }
 
+export function potentialPointsFunctionFactory(dieValue: number): PotentialPointsFn {
+  return (newDiceValues) => {
+    let points = 0;
+    newDiceValues.forEach((die) => {
+      if (die.value === dieValue) {
+        points += dieValue;
+      }
+    });
+    return points;
+  };
+}
+
 function generateDiceValueCountObject(diceValues: IDie[]): Object {
   return diceValues.reduce((acc, die) => {
     acc[die.value] = (acc[die.value] || 0) + 1;
