@@ -16,7 +16,9 @@ export default function Header() {
 function MainNav() {
   return (
     <div className={styles.mainNav}>
-      <Link href="/">Yachtsea</Link>
+      <Link href="/">
+        <h3>{'Yachtsea'}</h3>
+      </Link>
     </div>
   );
 }
