@@ -1,16 +1,9 @@
-import { auth } from 'auth';
 import { signIn, signOut } from 'auth';
 import styles from './UserButton.module.css';
 
-export default async function UserButton() {
-  const session = await auth();
+export default function UserButton({ session }) {
   if (!session?.user) return <SignIn />;
-  return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <p>Hey, {session?.user.name}!</p>
-      <SignOut />
-    </div>
-  );
+  return <SignOut />;
 }
 
 function SignIn({ provider }: { provider?: string }) {
