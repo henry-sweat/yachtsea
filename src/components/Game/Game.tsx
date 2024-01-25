@@ -6,15 +6,13 @@ import { ScorecardContainer, RollButton, DiceContainer } from '@/components';
 import styles from './Game.module.css';
 
 export default function Game() {
-  const user = useGameStateStore((state) => state.user);
   const { updateUser } = useGameActions();
   const { data: session } = useSession();
 
   useEffect(() => {
     console.log('game rerender');
-    console.log('user:', user);
     updateUser(session);
-  }, [session, updateUser, user]);
+  }, [session, updateUser]);
 
   return (
     <div className={styles.game}>
