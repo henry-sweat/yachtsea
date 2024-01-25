@@ -112,7 +112,6 @@ const useGameStateStore = create<IGameState>((set) => ({
       }),
     updateUser: (session: Session) =>
       set(({ setters }) => {
-        console.log('updating user in state...');
         const { setUser } = setters;
         if (session?.user) {
           setUser(session.user);

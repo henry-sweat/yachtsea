@@ -1,5 +1,5 @@
 'use client';
-import useGameStateStore, { useGameActions } from '@/stores/gameState';
+import { useGameActions } from '@/stores/gameState';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { ScorecardContainer, RollButton, DiceContainer } from '@/components';
@@ -10,7 +10,6 @@ export default function Game() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    console.log('game rerender');
     updateUser(session);
   }, [session, updateUser]);
 
