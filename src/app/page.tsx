@@ -1,10 +1,24 @@
+import { auth } from 'auth';
+import { SessionProvider } from 'next-auth/react';
 import { Game } from '@/components';
 import styles from './page.module.css';
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  if (session?.user) {
+    // filter out sensitive data before passing to client.
+    session.user = {
+      name: session.user.name,
+      email: session.user.email,
+      image: session.user.image,
+    };
+  }
+
   return (
-    <main className={styles.main}>
-      <Game />
-    </main>
+    <SessionProvider session={session}>
+      <main className={styles.main}>
+        <Game />
+      </main>
+    </SessionProvider>
   );
 }

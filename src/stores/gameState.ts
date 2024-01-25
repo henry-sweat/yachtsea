@@ -5,9 +5,11 @@ import {
   generateInitialTotalsState,
 } from '@/data/initialStateFunctions';
 import { checkForYachtseaFn } from '@/data/potentialPointsFunctions';
-import { IGameState, IScorecard, IScorecardRow, IDie, ITotals } from '@/types';
+import { IGameState, IScorecard, IScorecardRow, IDie, ITotals, IUser } from '@/types';
+import type { Session } from 'next-auth';
 
 const useGameStateStore = create<IGameState>((set) => ({
+  user: undefined,
   rollCounter: 0,
   roundCounter: 1,
   dice: generateInitialDiceValuesState(),
@@ -108,6 +110,16 @@ const useGameStateStore = create<IGameState>((set) => ({
         }
         return {};
       }),
+    updateUser: (session: Session) =>
+      set(({ setters }) => {
+        const { setUser } = setters;
+        if (session?.user) {
+          setUser(session.user);
+        } else {
+          setUser(null);
+        }
+        return {};
+      }),
   },
 
   setters: {
@@ -117,6 +129,7 @@ const useGameStateStore = create<IGameState>((set) => ({
     setScorecard: (newScorecard: IScorecard) => set({ scorecard: newScorecard }),
     setTotals: (newTotals: ITotals) => set({ totals: newTotals }),
     setUserHasSelectedPoints: (bool: boolean) => set({ userHasSelectedPoints: bool }),
+    setUser: (newUser: null | IUser) => set({ user: newUser }),
   },
 }));
 
