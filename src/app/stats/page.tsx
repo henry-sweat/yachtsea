@@ -1,25 +1,23 @@
 import { auth } from 'auth';
-import { getStats } from '@/db/data';
+import { getHighScore } from '@/db/actions';
 
 export default async function Stats() {
   const session = await auth();
-  let data;
 
   if (!session) {
-    data = null;
-  } else {
-    data = await getStats(session.user.email);
+    return renderNotSignedInMessage();
   }
 
-  return (
-    <div>
-      {data ? (
-        <div>{`Games Played: ${data.gamesPlayed}`}</div>
-      ) : (
-        <div>
-          <div>You are not signed in!</div>
-        </div>
-      )}
-    </div>
-  );
+  const user_id = session.user.email;
+  const highScore = await getHighScore(user_id);
+
+  return renderStatsPage(highScore);
+}
+
+function renderNotSignedInMessage() {
+  return <div>You are not signed in!</div>;
+}
+
+function renderStatsPage(highScore) {
+  return <div>{`High Score: ${highScore}`}</div>;
 }

@@ -33,3 +33,17 @@ export async function endGame(user_id: string, total_score: number) {
     throw new Error('Failed to end game.');
   }
 }
+
+export async function getHighScore(user_id: string) {
+  try {
+    const game = await sql`SELECT MAX(total_score)
+    FROM games
+    WHERE user_id = ${user_id}
+    ;
+    `;
+    return game.rows[0].max;
+  } catch (error) {
+    console.error('Failed to fetch highscore:', error);
+    throw new Error('Failed to fetch highscore.');
+  }
+}
