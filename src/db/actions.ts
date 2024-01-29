@@ -47,10 +47,10 @@ export async function getStats(user_id: string) {
     ;
     `;
     const stats: IStatsProps = {
-      highScore: game.rows[0].high_score,
-      averageScore: Math.round(game.rows[0].average_score),
-      totalGamesStarted: game.rows[0].total_games_started,
-      totalGamesFinished: game.rows[0].total_games_finished,
+      highScore: game.rows[0].high_score || 0,
+      averageScore: Math.round(game.rows[0].average_score) || 0,
+      totalGamesStarted: game.rows[0].total_games_started || 0,
+      totalGamesFinished: game.rows[0].total_games_finished || 0,
     };
     return stats;
   } catch (error) {
