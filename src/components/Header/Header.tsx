@@ -22,6 +22,9 @@ function MainNav() {
       <Link href="/">
         <h3>{'Yachtsea'}</h3>
       </Link>
+      <Link href="/stats">
+        <h3>{'Stats'}</h3>
+      </Link>
     </div>
   );
 }

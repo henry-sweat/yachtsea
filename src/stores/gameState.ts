@@ -5,6 +5,7 @@ import {
   generateInitialTotalsState,
 } from '@/data/initialStateFunctions';
 import { checkForYachtseaFn } from '@/data/potentialPointsFunctions';
+import { startGame, endGame } from '@/db/actions';
 import { IGameState, IScorecard, IScorecardRow, IDie, ITotals, IUser } from '@/types';
 import type { Session } from 'next-auth';
 
@@ -20,6 +21,7 @@ const useGameStateStore = create<IGameState>((set) => ({
     updateGameStateForRollButtonClicked: () =>
       set(
         ({
+          user,
           rollCounter,
           roundCounter,
           dice,
@@ -30,6 +32,10 @@ const useGameStateStore = create<IGameState>((set) => ({
         }) => {
           const { updateRollCounter, updateRoundCounter } = actions;
           const { setDice, setScorecard, setUserHasSelectedPoints, setTotals } = setters;
+
+          if (user && (rollCounter === 0 || (roundCounter === 13 && userHasSelectedPoints))) {
+            startGame(user.email);
+          }
 
           updateRollCounter();
 
@@ -66,7 +72,7 @@ const useGameStateStore = create<IGameState>((set) => ({
         return {};
       }),
     updateGameStateForPointsClicked: (indexOfClickedRow) =>
-      set(({ dice, scorecard, actions, setters }) => {
+      set(({ user, roundCounter, dice, scorecard, actions, setters }) => {
         const { updateTotalsWithScorecard } = actions;
         const { setDice, setScorecard, setUserHasSelectedPoints } = setters;
 
@@ -81,6 +87,12 @@ const useGameStateStore = create<IGameState>((set) => ({
         setScorecard(newScorecard);
         updateTotalsWithScorecard(newScorecard);
         setUserHasSelectedPoints(true);
+
+        if (user && roundCounter === 13) {
+          const { grandTotal } = calculateTotalsWithScorecard(newScorecard);
+          endGame(user.email, grandTotal);
+        }
+
         return {};
       }),
     updateTotalsWithScorecard: (scorecard: IScorecard) =>
@@ -239,6 +251,10 @@ function calculateLowerSectionTotalsWithScorecard(scorecard: IScorecard) {
   const yachtseaBonus = scorecard.yachtseaBonus.numberOfBonuses * 100;
   const lowerSectionTotal = lowerSectionSubtotal + yachtseaBonus;
   return [yachtseaBonus, lowerSectionTotal];
+}
+
+function endGameInDatabase(user_id: string, total_score: number) {
+  return;
 }
 
 function rollSixSidedDie(): number {
