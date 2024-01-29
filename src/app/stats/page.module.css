@@ -1,0 +1,10 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 4rem;
+  min-height: 100vh;
+}
+
+.stat {
+  padding: 5px;
+}

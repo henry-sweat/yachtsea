@@ -67,9 +67,16 @@ export interface ITotals {
 
 export type PotentialPointsFn = (diceValues: IDie[]) => number;
 
-// REACT COMPONENT PROP TYPES
+// PROP TYPES
 export interface ICounterProps {
   type: string;
   counter: number;
   denominator: number;
+}
+
+export interface IStatsProps {
+  highScore: number;
+  totalGamesStarted: number;
+  totalGamesFinished: number;
+  averageScore: number;
 }
