@@ -1,5 +1,7 @@
 import { auth } from 'auth';
-import { getHighScore } from '@/db/actions';
+import { getStats } from '@/db/actions';
+import { IStatsProps } from '@/types';
+import styles from './page.module.css';
 
 export default async function Stats() {
   const session = await auth();
@@ -9,15 +11,31 @@ export default async function Stats() {
   }
 
   const user_id = session.user.email;
-  const highScore = await getHighScore(user_id);
+  const data = await getStats(user_id);
 
-  return renderStatsPage(highScore);
+  return renderStatsPage(data);
 }
 
 function renderNotSignedInMessage() {
-  return <div>You are not signed in!</div>;
+  return (
+    <div className={styles.main}>
+      <div>You are not signed in!</div>
+    </div>
+  );
 }
 
-function renderStatsPage(highScore) {
-  return <div>{`High Score: ${highScore}`}</div>;
+function renderStatsPage({
+  highScore,
+  totalGamesStarted,
+  totalGamesFinished,
+  averageScore,
+}: IStatsProps) {
+  return (
+    <div className={styles.main}>
+      <div className={styles.stat}>{`High Score: ${highScore}`}</div>
+      <div className={styles.stat}>{`Average Score: ${averageScore}`}</div>
+      <div className={styles.stat}>{`Total Games Started: ${totalGamesStarted}`}</div>
+      <div className={styles.stat}>{`Total Games Finished: ${totalGamesFinished}`}</div>
+    </div>
+  );
 }

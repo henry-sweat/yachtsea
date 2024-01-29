@@ -6,7 +6,6 @@ import styles from './page.module.css';
 export default async function Home() {
   const session = await auth();
   if (session?.user) {
-    // filter out sensitive data before passing to client.
     session.user = {
       name: session.user.name,
       email: session.user.email,

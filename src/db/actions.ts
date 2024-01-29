@@ -1,5 +1,6 @@
 'use server';
 
+import { IStatsProps } from '@/types';
 import { sql } from '@vercel/postgres';
 
 export async function startGame(user_id: string) {
@@ -34,16 +35,26 @@ export async function endGame(user_id: string, total_score: number) {
   }
 }
 
-export async function getHighScore(user_id: string) {
+export async function getStats(user_id: string) {
   try {
-    const game = await sql`SELECT MAX(total_score)
+    const game = await sql`SELECT
+        MAX(total_score) FILTER (WHERE game_is_finished = TRUE) AS high_score,
+        COUNT(*) AS total_games_started,
+        COUNT(*) FILTER (WHERE game_is_finished = TRUE) AS total_games_finished,
+        AVG(total_score) FILTER (WHERE game_is_finished = TRUE) AS average_score
     FROM games
     WHERE user_id = ${user_id}
     ;
     `;
-    return game.rows[0].max;
+    const stats: IStatsProps = {
+      highScore: game.rows[0].high_score,
+      averageScore: Math.round(game.rows[0].average_score),
+      totalGamesStarted: game.rows[0].total_games_started,
+      totalGamesFinished: game.rows[0].total_games_finished,
+    };
+    return stats;
   } catch (error) {
-    console.error('Failed to fetch highscore:', error);
-    throw new Error('Failed to fetch highscore.');
+    console.error('Failed to fetch stats:', error);
+    throw new Error('Failed to fetch stats.');
   }
 }
