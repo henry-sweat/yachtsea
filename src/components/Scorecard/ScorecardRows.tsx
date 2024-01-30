@@ -2,7 +2,46 @@ import useGameStateStore, { useGameActions } from '@/stores/gameState';
 import { yachtseaBonusSymbol } from '@/utils/constants';
 import styles from './Scorecard.module.css';
 
-export function PointsCell({ scorecardStateIndex }) {
+export function ScoreRow({ category, details, scorecardStateIndex }) {
+  return (
+    <tr>
+      <td>{category}</td>
+      <td>{details}</td>
+      <PointsCell scorecardStateIndex={scorecardStateIndex} />
+    </tr>
+  );
+}
+
+export function TotalRow({ category, totalsStateProperty }) {
+  return (
+    <tr className={styles.total}>
+      <td>{category}</td>
+      <td>{'--->'}</td>
+      <TotalCell totalsStateProperty={totalsStateProperty} />
+    </tr>
+  );
+}
+
+export function YachtseaBonusRow() {
+  return (
+    <tr className={styles.total}>
+      <td rowSpan={2}>{'YACHTSEA BONUS'}</td>
+      <td>{'X per Bonus'}</td>
+      <YachtseaBonusCell />
+    </tr>
+  );
+}
+
+export function YachtseaBonusTotalRow() {
+  return (
+    <tr className={styles.total}>
+      <td>{'Score 100 per X'}</td>
+      <TotalCell totalsStateProperty={'yachtseaBonusTotal'} />
+    </tr>
+  );
+}
+
+function PointsCell({ scorecardStateIndex }) {
   const rollCounter = useGameStateStore((state) => state.rollCounter);
   const scorecard = useGameStateStore((state) => state.scorecard);
   const userHasSelectedPoints = useGameStateStore((state) => state.userHasSelectedPoints);
@@ -34,7 +73,7 @@ export function PointsCell({ scorecardStateIndex }) {
   );
 }
 
-export function TotalCell({ totalsStateProperty }) {
+function TotalCell({ totalsStateProperty }) {
   const totals = useGameStateStore((state) => state.totals);
 
   return totalsStateProperty === 'upperSectionSubTotal' ? (
@@ -44,7 +83,7 @@ export function TotalCell({ totalsStateProperty }) {
   );
 }
 
-export function YachtseaBonusCell() {
+function YachtseaBonusCell() {
   const scorecard = useGameStateStore((state) => state.scorecard);
 
   return (

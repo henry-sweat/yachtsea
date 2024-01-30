@@ -70,11 +70,7 @@ export function checkForStraight(lengthOfSequence: number): PotentialPointsFn {
   };
 }
 
-export function sumOfDiceValues(diceValues: IDie[]): number {
-  return diceValues.reduce((sum, die) => sum + die.value, 0);
-}
-
-export function potentialPointsFunctionFactory(dieValue: number): PotentialPointsFn {
+export function addOnly(dieValue: number): PotentialPointsFn {
   return (newDiceValues) => {
     let points = 0;
     newDiceValues.forEach((die) => {
@@ -84,6 +80,10 @@ export function potentialPointsFunctionFactory(dieValue: number): PotentialPoint
     });
     return points;
   };
+}
+
+export function sumOfDiceValues(diceValues: IDie[]): number {
+  return diceValues.reduce((sum, die) => sum + die.value, 0);
 }
 
 function generateDiceValueCountObject(diceValues: IDie[]): Object {

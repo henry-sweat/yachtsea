@@ -68,6 +68,14 @@ export interface ITotals {
 export type PotentialPointsFn = (diceValues: IDie[]) => number;
 
 // PROP TYPES
+export interface IUserButtonProps {
+  session: Session;
+}
+
+export interface IDieProps {
+  diceStateIndex: number;
+}
+
 export interface ICounterProps {
   type: string;
   counter: number;

@@ -1,7 +1,8 @@
 import useGameStateStore, { useGameActions } from '@/stores/gameState';
 import styles from './DiceContainer.module.css';
+import { IDieProps } from '@/types';
 
-export default function Die({ diceStateIndex }) {
+export default function Die({ diceStateIndex }: IDieProps) {
   const rollCounter = useGameStateStore((state) => state.rollCounter);
   const dice = useGameStateStore((state) => state.dice);
   const { updateDiceStateForDieClicked } = useGameActions();

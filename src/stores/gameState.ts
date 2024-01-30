@@ -149,6 +149,7 @@ export default useGameStateStore;
 
 export const useGameActions = () => useGameStateStore((state) => state.actions);
 
+// HELPER FUNCTIONS
 function rollAndResetAllDice(dice: IDie[]): IDie[] {
   return dice.map((die) => ({
     id: die.id,
