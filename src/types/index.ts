@@ -12,7 +12,7 @@ export interface IGameState {
     updateGameStateForRollButtonClicked: () => void;
     updateDiceStateForDieClicked: (indexOfClickedDie: number) => void;
     updateGameStateForPointsClicked: (indexOfClickedRow: number) => void;
-    updateTotalsWithScorecard: (scorecard: IScorecard) => void;
+    updateTotals: (scorecard: IScorecard) => void;
     updateRollCounter: () => void;
     updateRoundCounter: () => void;
     updateUser: (session: Session) => void;

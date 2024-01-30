@@ -4,7 +4,7 @@ import {
   checkForFullHouse,
   checkForStraight,
   sumOfDiceValues,
-} from '@/data/potentialPointsFunctions';
+} from '@/utils/potentialPointsFunctions';
 
 export const upperSectionDetails = [
   {
