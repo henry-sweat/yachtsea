@@ -12,7 +12,7 @@ export interface IGameState {
     updateGameStateForRollButtonClicked: () => void;
     updateDiceStateForDieClicked: (indexOfClickedDie: number) => void;
     updateGameStateForPointsClicked: (indexOfClickedRow: number) => void;
-    updateTotalsWithScorecard: (scorecard: IScorecard) => void;
+    updateTotals: (scorecard: IScorecard) => void;
     updateRollCounter: () => void;
     updateRoundCounter: () => void;
     updateUser: (session: Session) => void;
@@ -68,6 +68,14 @@ export interface ITotals {
 export type PotentialPointsFn = (diceValues: IDie[]) => number;
 
 // PROP TYPES
+export interface IUserButtonProps {
+  session: Session;
+}
+
+export interface IDieProps {
+  diceStateIndex: number;
+}
+
 export interface ICounterProps {
   type: string;
   counter: number;

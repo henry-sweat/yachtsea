@@ -15,7 +15,7 @@ export default function RollButton() {
 
   return (
     <button className={styles.roll} onClick={handleRollClicked}>
-      ROLL
+      {' ROLL'}
     </button>
   );
 }

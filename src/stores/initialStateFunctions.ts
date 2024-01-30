@@ -1,9 +1,9 @@
-import { upperSectionDetails, lowerSectionDetails } from '@/utils/constants';
+import { scorecardDetails } from '@/utils/constants';
 import type { IScorecard, IScorecardRow, IScorecardYachtseaBonus, IDie, ITotals } from '@/types';
 
 export function generateInitialScorecardState(): IScorecard {
   const scorecardState: IScorecard = {
-    rows: generateScorecardRowsState(),
+    rows: generateScorecardRowsState(scorecardDetails),
     yachtseaBonus: generateYachtseaBonusState(),
   };
   return scorecardState;
@@ -29,15 +29,7 @@ export function generateInitialTotalsState(): ITotals {
   };
 }
 
-function generateScorecardRowsState(): Array<IScorecardRow> {
-  const upperScorecardState: Array<IScorecardRow> =
-    generateSectionOfScorecardState(upperSectionDetails);
-  const lowerScorecardState: Array<IScorecardRow> =
-    generateSectionOfScorecardState(lowerSectionDetails);
-  return upperScorecardState.concat(lowerScorecardState);
-}
-
-function generateSectionOfScorecardState(scorecardDetails): Array<IScorecardRow> {
+function generateScorecardRowsState(scorecardDetails): Array<IScorecardRow> {
   return scorecardDetails.map((row) => ({
     id: row.id,
     earnedPoints: undefined,
